@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>banking-api-parent</artifactId>
+        <groupId>com.epam.boot.api</groupId>
+        <version>1.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>banking-api-integration</artifactId>
+    <properties>
+        <camel.version>3.9.0</camel.version>
+        <jackson-databind-nullable-version>0.2.0</jackson-databind-nullable-version>
+        <main.basedir>${project.parent.basedir}</main.basedir>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.epam.boot.api</groupId>
+            <artifactId>banking-api-service</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.camel.springboot</groupId>
+            <artifactId>camel-spring-boot-starter</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.camel.springboot</groupId>
+            <artifactId>camel-bean-starter</artifactId>
+
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel.springboot</groupId>
+            <artifactId>camel-servlet-starter</artifactId>
+        </dependency>
+
+        <!-- other camel dependencies -->
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-spring</artifactId>
+        </dependency>
+
+        <!-- use for json binding -->
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-jackson</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-openapi-java</artifactId>
+            <!-- use the same version as your Camel core version -->
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-spring-javaconfig</artifactId>
+            <version>${camel.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-freemarker</artifactId>
+            <version>${camel.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-mail</artifactId>
+            <version>${camel.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-metrics</artifactId>
+            <version>${camel.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-sql</artifactId>
+            <version>${camel.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-mybatis</artifactId>
+            <version>${camel.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.mybatis</groupId>
+                    <artifactId>mybatis</artifactId>
+                </exclusion>
+            </exclusions>
+            <!-- use the same version as your Camel core version -->
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-http</artifactId>
+        </dependency>
+        <!-- Camel -->
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-velocity</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel.springboot</groupId>
+            <artifactId>camel-velocity-starter</artifactId>
+            <!-- use the same version as your Camel core version -->
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel.springboot</groupId>
+            <artifactId>camel-jackson-starter</artifactId>
+            <!-- use the same version as your Camel core version -->
+        </dependency>
+        <!-- ... other dependencies ... -->
+
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-test-spring-junit5</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-management</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <!--Import as a pom to let camel to manage camel-spring-boot dependencies version-->
+            <dependency>
+                <groupId>org.apache.camel.springboot</groupId>
+                <artifactId>camel-spring-boot-dependencies</artifactId>
+                <version>${camel.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.camel</groupId>
+                <artifactId>camel-restdsl-openapi-plugin</artifactId>
+                <!--artifactId>camel-restdsl-swagger-plugin</artifactId-->
+                <version>${camel.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate-xml</goal>
+                        </goals>
+                        <phase>compile</phase>
+                    </execution>
+                </executions>
+                <configuration>
+                    <fileName>camel-rest.xml</fileName>
+                    <specificationUri>${project.basedir}/src/spec/open-api3.yaml</specificationUri>
+
+                    <!--specificationUri>https://api.swaggerhub.com/apis/tes945/acme-Bank/1.0.0/swagger.yaml</specificationUri-->
+                    <className>title</className>
+                    <outputDirectory>${project.basedir}/src/main/resources/camel-rest</outputDirectory>
+                    <apiContextPath>/api/*</apiContextPath>
+                    <restConfiguration>true</restConfiguration>
+                    <apiContextPath>/api/*</apiContextPath>
+                    <!--modelOutput>
+                        ${project.build.directory}/generated-sources
+                    </modelOutput-->
+                    <packageName>com.epam.boot.api.banking.integration</packageName>
+                    <modelPackage>com.epam.boot.api.banking.integration.dto</modelPackage><!-- 5 -->
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.openapitools</groupId>
+                <artifactId>openapi-generator-maven-plugin</artifactId>
+                <version>5.1.0</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${project.basedir}/src/spec/open-api3.yaml</inputSpec>
+                            <generateModels>true</generateModels>
+                            <generateApis>false</generateApis>
+                            <generateApiDocumentation>false</generateApiDocumentation>
+                            <generateSupportingFiles>false</generateSupportingFiles>
+                            <generateAliasAsModel>false</generateAliasAsModel>
+                            <generateApiTests>false</generateApiTests>
+                            <generatorName>spring</generatorName>
+                            <modelPackage>com.epam.boot.api.banking.domain.aggregate</modelPackage>
+                            <!--packageName>com.epam.boot.api.banking.domain.aggregate</packageName-->
+                            <output>${main.basedir}/banking-api-domain</output>
+                            <configOptions>
+                                <interfaceOnly>true</interfaceOnly>
+                                <dateLibrary>java8</dateLibrary>
+                            </configOptions>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+        </plugins>
+    </build>
+</project>

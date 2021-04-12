@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="banking-api-integration" />
+        <module name="banking-api-domain" />
+        <module name="banking-api-repository" />
+        <module name="banking-api-application" />
+        <module name="banking-api-service" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="banking-api-application" target="11" />
+      <module name="banking-api-domain" target="11" />
+      <module name="banking-api-integration" target="11" />
+      <module name="banking-api-parent" target="11" />
+      <module name="banking-api-repository" target="11" />
+      <module name="banking-api-service" target="11" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="banking-api-application" options="-parameters" />
+      <module name="banking-api-domain" options="-parameters" />
+      <module name="banking-api-integration" options="-parameters" />
+      <module name="banking-api-repository" options="-parameters" />
+      <module name="banking-api-service" options="-parameters" />
+    </option>
+  </component>
+</project>

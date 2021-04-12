@@ -1,0 +1,861 @@
+openapi: 3.0.0
+info:
+  title: acme-bank
+  version: '1.0'
+externalDocs:
+  url: 'http://'
+  description: '**ACME Bank** is a _multinational_ banking and financial services organization.'
+  x-amf-title: ACME Bank Headline
+x-amf-userDocumentation:
+  - url: 'http://'
+    content: |
+      **ACME Banking API** enables developers to build applications that make use of the information from resource  methods implemented in the API. 
+
+      This API contains functionality that allows developers to retrieve and manipulate _customer_, _account_ and _transaction_ information. Check out the [API Portal]() for more details.
+    title: ACME BANKING API
+paths:
+  /customers:
+    post:
+      description: creates a customer
+      parameters:
+        - name: Accept
+          description: specifies the media type accepted by the client
+          required: false
+          in: header
+          schema:
+            description: specifies the media type accepted by the client
+            example: appication/json
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Customer'
+      responses:
+        '201':
+          description: ''
+          headers:
+            Location:
+              description: URL of the newly created customer
+              required: true
+              schema:
+                description: URL of the newly created customer
+                type: string
+        '406':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/type'
+        '503':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/type'
+      x-amf-security:
+        - customTokenSecurity: []
+      servers:
+        - url: ''
+    get:
+      description: get list of customers
+      parameters:
+        - name: Accept
+          description: specifies the media type accepted by the client
+          required: false
+          in: header
+          schema:
+            description: specifies the media type accepted by the client
+            example: appication/json
+            type: string
+      responses:
+        '200':
+          description: ''
+          headers:
+            Cache-Control:
+              description: |
+                Activates caching and defines cache behavior through cache response directives. 
+                Usually defines public or private (cacheable by proxy or not) and max-age for resource.
+                See http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html for more information.
+              required: true
+              schema:
+                description: |
+                  Activates caching and defines cache behavior through cache response directives. 
+                  Usually defines public or private (cacheable by proxy or not) and max-age for resource.
+                  See http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html for more information.
+                example: 'private, max-age=31536000'
+                type: string
+            Expires:
+              description: |
+                Sets a date in RFC 1123 format from which the cached resource should no longer be considered valid.
+                If both the Expires header and max-age in the Cache-Control header are set, max-age will take precedence.
+              required: true
+              schema:
+                description: |
+                  Sets a date in RFC 1123 format from which the cached resource should no longer be considered valid.
+                  If both the Expires header and max-age in the Cache-Control header are set, max-age will take precedence.
+                example: 'Tue, 18 Apr 2017 09:30:41 GMT'
+                type: string
+                format: rfc2616
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Customer'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Customer'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/type'
+        '406':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/type'
+      security:
+        - oauth2_0: []
+      servers:
+        - url: ''
+  '/customers/{customer_id}':
+    get:
+      description: get customer by  customer ID
+      parameters:
+        - name: customer_id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/type'
+      x-amf-security:
+        - customTokenSecurity: []
+      servers:
+        - url: ''
+    patch:
+      description: updates a customer based on customer ID
+      parameters:
+        - name: customer_id
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Customer'
+      responses:
+        '204':
+          description: ''
+        '501':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/type'
+      security:
+        - oauth2_0: []
+      servers:
+        - url: ''
+    delete:
+      description: deletes customer by customer ID
+      parameters:
+        - name: customer_id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/type'
+      x-amf-security:
+        - customTokenSecurity: []
+      servers:
+        - url: ''
+  '/customers/{customer_id}/accounts':
+    get:
+      parameters:
+        - name: customer_id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Account'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Account'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/type'
+      x-amf-security:
+        - customTokenSecurity: []
+      servers:
+        - url: ''
+  /accounts:
+    post:
+      description: creates a account
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Account'
+      responses:
+        '201':
+          description: ''
+          headers:
+            Location:
+              description: URL of the newly created account
+              required: true
+              schema:
+                description: URL of the newly created account
+                type: string
+        '503':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/type'
+      x-amf-security:
+        - customTokenSecurity: []
+      servers:
+        - url: ''
+    get:
+      description: get list of accounts
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Account'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Account'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/type'
+      x-amf-security:
+        - customTokenSecurity: []
+      servers:
+        - url: ''
+  '/accounts/{accounts_id}':
+    get:
+      description: get account by  account ID
+      parameters:
+        - name: accounts_id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/type'
+      x-amf-security:
+        - customTokenSecurity: []
+      servers:
+        - url: ''
+    delete:
+      description: deletes account by account ID
+      parameters:
+        - name: accounts_id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/type'
+      x-amf-security:
+        - customTokenSecurity: []
+      servers:
+        - url: ''
+    put:
+      description: replaces an existing account by account ID
+      parameters:
+        - name: accounts_id
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Account'
+      responses:
+        '200':
+          description: ''
+        '201':
+          description: ''
+        '501':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/type'
+      x-amf-security:
+        - customTokenSecurity: []
+      servers:
+        - url: ''
+  '/accounts/{accounts_id}/transactions':
+    get:
+      parameters:
+        - name: accounts_id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Transaction'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Transaction'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/type'
+      x-amf-security:
+        - customTokenSecurity: []
+      servers:
+        - url: ''
+  /transactions:
+    get:
+      description: get list of transactions
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Transaction'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Transaction'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/type'
+      x-amf-security:
+        - customTokenSecurity: []
+      servers:
+        - url: ''
+    post:
+      description: creates a transaction
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Transaction'
+      responses:
+        '201':
+          description: ''
+          headers:
+            Location:
+              description: URL of the newly created transaction
+              required: true
+              schema:
+                description: URL of the newly created transaction
+                type: string
+        '503':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/type'
+      x-amf-security:
+        - customTokenSecurity: []
+      servers:
+        - url: ''
+  '/transactions/{transactions_id}':
+    get:
+      description: get transaction by  transaction ID
+      parameters:
+        - name: transactions_id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transaction'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/type'
+      x-amf-security:
+        - customTokenSecurity: []
+      servers:
+        - url: ''
+components:
+  schemas:
+    Customer:
+      x-amf-examples:
+        example1:
+          customerID: 1fe1c22s-3d3a-9n3v
+          firstName: Molly
+          lastName: Mule
+          displayName: Molly the Mule
+          address:
+            addressLine1: 123 Street
+            addressLine2: Apt.#3D
+            city: San Francisco
+            state: California
+            zipCode: '94110'
+            country: United States
+          phone: 415-000-0000
+          email: molly@mulesoft.com
+          ssn: 321-654-0987
+          dateOfBirth: '1990-09-04'
+        example2:
+          customerID: 8f19c230-vs57-429d
+          firstName: Max
+          lastName: Mule
+          displayName: Max the Mule
+          address:
+            addressLine1: 123 Street
+            addressLine2: Apt.#3D
+            city: San Francisco
+            state: California
+            zipCode: '94110'
+            country: United States
+          phone: 415-000-0000
+          email: max@mulesoft.com
+          ssn: 123-456-7890
+          dateOfBirth: '1988-07-01'
+      type: object
+      additionalProperties: true
+      required:
+        - customerID
+        - firstName
+        - lastName
+        - displayName
+        - address
+        - phone
+        - email
+        - ssn
+        - dateOfBirth
+      properties:
+        customerID:
+          type: string
+        prefix:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        suffix:
+          type: string
+        displayName:
+          type: string
+        address:
+          $ref: '#/components/schemas/address'
+        phone:
+          type: string
+        email:
+          type: string
+        ssn:
+          type: string
+        dateOfBirth:
+          type: string
+          format: date
+    type:
+      example:
+        statusCode: '404'
+        message: Not Found
+      type: object
+      additionalProperties: true
+      required:
+        - statusCode
+        - message
+      properties:
+        statusCode:
+          type: string
+        message:
+          type: string
+    Account:
+      example:
+        accountID: '12345'
+        accountType: Savings
+        accountNumber: '1234567890'
+        accountOwner:
+          - customerID: 8f19cb50-3f57-4d38
+            displayName: John Doe
+            ssn: 123-456-7890
+        accountBalance:
+          currency: USD
+          amount: '8457.90'
+        IBAN: GB29NWBK60161331926820
+        bank:
+          bankCode: NWBKGB2L
+          bankName: ACME Bank
+          routingNumber: '432159876'
+        createdAt: '2012-03-07T00:00:00.001Z'
+      type: object
+      additionalProperties: true
+      required:
+        - accountID
+        - accountType
+        - accountNumber
+        - accountOwner
+        - accountBalance
+        - IBAN
+        - bank
+        - createdAt
+      properties:
+        accountID:
+          type: string
+        accountType:
+          enum:
+            - Checking
+            - Savings
+            - Overdraft Savings
+            - Credit Card
+          type: string
+        accountNumber:
+          type: string
+        accountOwner:
+          type: array
+          items:
+            $ref: '#/components/schemas/items'
+        accountBalance:
+          $ref: '#/components/schemas/accountBalance'
+        IBAN:
+          type: string
+          pattern: '^[A-Z]{2,2}[0-9]{2,2}[a-zA-Z0-9]{1,30}$'
+        bank:
+          $ref: '#/components/schemas/bank'
+        interestRate:
+          type: number
+          format: double
+        createdAt:
+          type: string
+          format: date-time
+        modifiedAt:
+          type: string
+          format: date-time
+    Transaction:
+      example:
+        transactionID: b05f550d-1915-4def
+        fromAccount:
+          accountID: '12345'
+          accountType: Savings
+          accountNumber: '1234567890'
+          accountOwner:
+            - customerID: 8f19cb50-3f57-4d38
+              displayName: John Doe
+              ssn: 123-456-7890
+          accountBalance:
+            currency: USD
+            amount: '8457.90'
+          IBAN: GB29NWBK60161331926820
+          bank:
+            bankCode: NWBKGB2L
+            bankName: ACME Bank
+            routingNumber: '432159876'
+          createdAt: '2012-03-07T00:00:00.001Z'
+        toAccount:
+          accountID: '56437'
+          accountType: Credit Card
+          accountNumber: '4321987650'
+          accountOwner:
+            - customerID: 8f19cb50-3f57-4d38
+              displayName: John Doe
+              ssn: 123-456-7890
+          IBAN: GB29NWBK60161331926820
+          bank:
+            bankCode: NWBKGB2L
+            bankName: ACME Bank
+            routingNumber: '432159876'
+          accountBalance:
+            currency: USD
+            amount: '698.00'
+          createdAt: '2012-03-07T00:00:00.001Z'
+        transactionType: online
+        transactionAmount:
+          currency: USD
+          amount: '70.00'
+        newAccountBalance:
+          currency: USD
+          amount: '8387.90'
+        postedAt: '2012-06-07T00:00:00.001Z'
+      type: object
+      additionalProperties: true
+      required:
+        - transactionID
+        - fromAccount
+        - toAccount
+        - transactionType
+        - transactionAmount
+        - newAccountBalance
+        - postedAt
+      properties:
+        transactionID:
+          type: string
+        fromAccount:
+          $ref: '#/components/schemas/fromAccount'
+        toAccount:
+          $ref: '#/components/schemas/fromAccount'
+        transactionType:
+          enum:
+            - atm
+            - deposit
+            - cashWithdrawal
+            - sepa
+            - online
+          type: string
+        transactionName:
+          type: string
+        transactionAmount:
+          $ref: '#/components/schemas/accountBalance'
+        newAccountBalance:
+          $ref: '#/components/schemas/accountBalance'
+        postedAt:
+          type: string
+          format: date-time
+        completedAt:
+          type: string
+          format: date-time
+    address:
+      type: object
+      additionalProperties: true
+      required:
+        - addressLine1
+        - city
+        - zipCode
+        - state
+        - country
+      properties:
+        addressLine1:
+          type: string
+        addressLine2:
+          type: string
+        city:
+          type: string
+        zipCode:
+          type: string
+        state:
+          type: string
+        country:
+          type: string
+    accountBalance:
+      type: object
+      additionalProperties: true
+      required:
+        - currency
+        - amount
+      properties:
+        currency:
+          type: string
+        amount:
+          type: string
+    bank:
+      type: object
+      additionalProperties: true
+      required:
+        - bankCode
+        - bankName
+      properties:
+        bankCode:
+          type: string
+        bankName:
+          type: string
+        routingNumber:
+          type: string
+        swiftBIC:
+          type: string
+    items:
+      type: object
+      additionalProperties: true
+      required:
+        - customerID
+        - ssn
+        - displayName
+      properties:
+        customerID:
+          type: string
+        ssn:
+          type: string
+        displayName:
+          type: string
+    fromAccount:
+      example:
+        accountID: '12345'
+        accountType: Savings
+        accountNumber: '1234567890'
+        accountOwner:
+          - customerID: 8f19cb50-3f57-4d38
+            displayName: John Doe
+            ssn: 123-456-7890
+        accountBalance:
+          currency: USD
+          amount: '8457.90'
+        IBAN: GB29NWBK60161331926820
+        bank:
+          bankCode: NWBKGB2L
+          bankName: ACME Bank
+          routingNumber: '432159876'
+        createdAt: '2012-03-07T00:00:00.001Z'
+      type: object
+      additionalProperties: true
+      required:
+        - accountID
+        - accountType
+        - accountNumber
+        - accountOwner
+        - accountBalance
+        - IBAN
+        - bank
+        - createdAt
+      properties:
+        accountID:
+          type: string
+        accountType:
+          enum:
+            - Checking
+            - Savings
+            - Overdraft Savings
+            - Credit Card
+          type: string
+        accountNumber:
+          type: string
+        accountOwner:
+          type: array
+          items:
+            $ref: '#/components/schemas/items'
+        accountBalance:
+          $ref: '#/components/schemas/accountBalance'
+        IBAN:
+          type: string
+          pattern: '^[A-Z]{2,2}[0-9]{2,2}[a-zA-Z0-9]{1,30}$'
+        bank:
+          $ref: '#/components/schemas/bank'
+        interestRate:
+          type: number
+          format: double
+        createdAt:
+          type: string
+          format: date-time
+        modifiedAt:
+          type: string
+          format: date-time
+  securitySchemes:
+    oauth2_0:
+      type: oauth2
+      description: Apply the OAuth 2.0 security policy to resource methods for authenticating API requests
+      x-amf-describedBy:
+        headers:
+          Authorization:
+            description: |
+              Used to send a valid OAuth 2 access token. Do not use with the "access_token" query. string parameter.
+            type: string
+        queryParameters:
+          access_token:
+            description: |
+              Used to send a valid OAuth 2 access token. Do not use together with the "Authorization" header.
+            type: string
+        responses:
+          '401':
+            description: |
+              Bad or expired token. This can happen if the API consumer uses a revoked or expired access token. To fix, you should re-authenticate the user.
+          '403':
+            description: |
+              Bad OAuth request (wrong consumer key, bad nonce, expired timestamp...). Unfortunately, re-authenticating the user won't help here.
+      flows:
+        authorizationCode:
+          authorizationUrl: 'https://placeholder.com/oauth2/authorize'
+          tokenUrl: 'https://placeholder.com/oauth2/access_token'
+          scopes:
+            '*': ''
+  x-amf-securitySchemes:
+    customTokenSecurity:
+      type: x-customToken
+      description: This security scheme
+      x-amf-describedBy:
+        headers:
+          Authorization:
+            description: this header should contain a security Token
+            type: string

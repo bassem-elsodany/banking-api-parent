@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+
+    <settings>
+        <setting name="useGeneratedKeys" value="false"/>
+        <setting name="jdbcTypeForNull" value="NULL" />
+    </settings>
+
+    <!-- Use type aliases to avoid typing the full classname every time. -->
+    <typeAliases>
+        <typeAlias alias="Account" type="com.epam.boot.api.banking.domain.aggregate.Account"/>
+    </typeAliases>
+
+    <!--environments default="dev">
+        <environment id="dev">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED" >
+                <property name="driver" value="${spring.datasource.driver-class-name}"/>
+                <property name="url" value="${spring.datasource.url}"/>
+                <property name="username" value="${spring.datasource.username}"/>
+                <property name="password" value="${spring.datasource.password}"/>
+            </dataSource>
+        </environment>
+    </environments-->
+
+    <!-- mapping files -->
+
+    <!--mappers>
+        <mapper resource="sqlmaps/Account.xml"/>
+    </mappers-->
+
+</configuration>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/banking-api-application/banking-api-application.iml" filepath="$PROJECT_DIR$/banking-api-application/banking-api-application.iml" />
+      <module fileurl="file://$PROJECT_DIR$/banking-api-domain/banking-api-domain.iml" filepath="$PROJECT_DIR$/banking-api-domain/banking-api-domain.iml" />
+      <module fileurl="file://$PROJECT_DIR$/banking-api-integration/banking-api-integration.iml" filepath="$PROJECT_DIR$/banking-api-integration/banking-api-integration.iml" />
+      <module fileurl="file://$PROJECT_DIR$/banking-api-parent.iml" filepath="$PROJECT_DIR$/banking-api-parent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/banking-api-repository/banking-api-repository.iml" filepath="$PROJECT_DIR$/banking-api-repository/banking-api-repository.iml" />
+      <module fileurl="file://$PROJECT_DIR$/banking-api-service/banking-api-service.iml" filepath="$PROJECT_DIR$/banking-api-service/banking-api-service.iml" />
+    </modules>
+  </component>
+</project>

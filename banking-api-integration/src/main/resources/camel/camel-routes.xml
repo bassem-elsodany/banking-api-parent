@@ -1,0 +1,97 @@
+<routes xmlns="http://camel.apache.org/schema/spring">
+    <route id="hello">
+        <from uri="timer:hello?period={{timer.period}}"/>
+        <transform>
+            <method ref="myBean" method="saySomething"/>
+        </transform>
+        <filter>
+            <simple>${body} contains 'foo'</simple>
+            <to uri="log:foo"/>
+        </filter>
+        <log message="Split by Distribute Order"/>
+    </route>
+    <route id="direct_hello">
+        <from uri="direct:hello"/>
+        <transform>
+            <constant>Hello World</constant>
+        </transform>
+    </route>
+    <route id="direct_bye">
+        <from uri="direct:bye"/>
+        <transform>
+            <constant>Bye World</constant>
+        </transform>
+    </route>
+
+    <route id="rest_getAllAccounts">
+        <from uri="direct:rest7"/>
+        <to uri="mybatis:selectAllAccounts?statementType=SelectList"/>
+        <log message="Output from MyBatis: ${body}"/>
+        <!--to uri="velocity:response-templates/getAllAccounts.vm?contentCache=true"/-->
+        <marshal>
+            <json/>
+        </marshal>
+    </route>
+
+
+    <route id="rest_getAccountById">
+        <from uri="direct:rest9"/>
+        <setBody>
+            <simple>${header.accounts_id}</simple>
+        </setBody>
+        <to uri="mybatis:selectAccountById?statementType=SelectOne"/>
+        <log message="Output from get Account: ${body}"/>
+        <!--to uri="velocity:response-templates/getAllAccounts.vm?contentCache=true"/-->
+        <marshal>
+            <json/>
+        </marshal>
+    </route>
+
+    <route id="rest_postAccount">
+        <from uri="direct:rest8"/>
+        <doTry>
+            <unmarshal>
+                <json/>
+            </unmarshal>
+            <log message=">>>>>>>>>>>>>>>: ${body}"/>
+            <aggregate strategyRef="combineAggregationStrategy" completionSize="1">
+                <correlationExpression>
+                    <constant>true</constant>
+                </correlationExpression>
+                <to uri="mybatis:insertAccount?statementType=Insert"/>
+            </aggregate>
+            <log message="Output from POST Account : ${body}"/>
+            <setHeader name="Location">
+                <simple>http://localhost:8080/api/accounts/${body['accountID']}</simple>
+            </setHeader>
+            <setHeader name="Exchange.HTTP_RESPONSE_CODE">
+                <constant>201</constant>
+            </setHeader>
+        </doTry>
+    </route>
+
+    <route id="rest_putAccount">
+        <from uri="direct:rest10"/>
+        <to uri="mybatis:insertAccount?statementType=Update"/>
+        <log message="Output from PUT Account: ${body}"/>
+        <!--to uri="velocity:response-templates/getAllAccounts.vm?contentCache=true"/-->
+        <marshal>
+            <json/>
+        </marshal>
+    </route>
+
+    <route id="rest_deleteAccount">
+        <from uri="direct:rest11"/>
+        <setBody>
+            <simple>${header.accounts_id}</simple>
+        </setBody>
+        <to uri="mybatis:deleteAccountById?statementType=Delete"/>
+        <log message="Output from delete Account: ${body}"/>
+        <setHeader name="Exchange.HTTP_RESPONSE_CODE">
+            <constant>200</constant>
+        </setHeader>
+        <to uri="bean:myBean?method=generateResponse('AP1001','Account Deleted Successfully')"/>
+        <log message="Output from BEAN Account: ${body}"/>
+    </route>
+
+</routes>

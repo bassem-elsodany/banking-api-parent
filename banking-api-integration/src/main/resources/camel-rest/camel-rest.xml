@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?><rests xmlns="http://camel.apache.org/schema/spring"><restConfiguration component="servlet"/>
+        
+    <rest>
+                
+        <get produces="application/json,application/xml" uri="/customers">
+                        
+            <description>get list of customers</description>
+                        
+            <param dataType="string" description="specifies the media type accepted by the client" name="Accept" required="false" type="header"/>
+                        
+            <to uri="direct:rest1"/>
+                    
+        </get>
+                
+        <post consumes="application/json" produces="application/json" uri="/customers">
+                        
+            <description>creates a customer</description>
+                        
+            <param dataType="string" description="specifies the media type accepted by the client" name="Accept" required="false" type="header"/>
+                        
+            <param name="body" required="true" type="body"/>
+                        
+            <to uri="direct:rest2"/>
+                    
+        </post>
+                
+        <get produces="application/json" uri="/customers/{customer_id}">
+                        
+            <description>get customer by  customer ID</description>
+                        
+            <param dataType="string" name="customer_id" required="true" type="path"/>
+                        
+            <to uri="direct:rest3"/>
+                    
+        </get>
+                
+        <delete produces="application/json" uri="/customers/{customer_id}">
+                        
+            <description>deletes customer by customer ID</description>
+                        
+            <param dataType="string" name="customer_id" required="true" type="path"/>
+                        
+            <to uri="direct:rest4"/>
+                    
+        </delete>
+                
+        <patch consumes="application/json" produces="application/json" uri="/customers/{customer_id}">
+                        
+            <description>updates a customer based on customer ID</description>
+                        
+            <param dataType="string" name="customer_id" required="true" type="path"/>
+                        
+            <param name="body" required="true" type="body"/>
+                        
+            <to uri="direct:rest5"/>
+                    
+        </patch>
+                
+        <get produces="application/json,application/xml" uri="/customers/{customer_id}/accounts">
+                        
+            <param dataType="string" name="customer_id" required="true" type="path"/>
+                        
+            <to uri="direct:rest6"/>
+                    
+        </get>
+                
+        <get produces="application/json,application/xml" uri="/accounts">
+                        
+            <description>get list of accounts</description>
+                        
+            <to uri="direct:rest7"/>
+                    
+        </get>
+                
+        <post consumes="application/json" produces="application/json" uri="/accounts">
+                        
+            <description>creates a account</description>
+                        
+            <param name="body" required="true" type="body"/>
+                        
+            <to uri="direct:rest8"/>
+                    
+        </post>
+                
+        <get produces="application/json" uri="/accounts/{accounts_id}">
+                        
+            <description>get account by  account ID</description>
+                        
+            <param dataType="string" name="accounts_id" required="true" type="path"/>
+                        
+            <to uri="direct:rest9"/>
+                    
+        </get>
+                
+        <put consumes="application/json" produces="application/json" uri="/accounts/{accounts_id}">
+                        
+            <description>replaces an existing account by account ID</description>
+                        
+            <param dataType="string" name="accounts_id" required="true" type="path"/>
+                        
+            <param name="body" required="true" type="body"/>
+                        
+            <to uri="direct:rest10"/>
+                    
+        </put>
+                
+        <delete produces="application/json" uri="/accounts/{accounts_id}">
+                        
+            <description>deletes account by account ID</description>
+                        
+            <param dataType="string" name="accounts_id" required="true" type="path"/>
+                        
+            <to uri="direct:rest11"/>
+                    
+        </delete>
+                
+        <get produces="application/json,application/xml" uri="/accounts/{accounts_id}/transactions">
+                        
+            <param dataType="string" name="accounts_id" required="true" type="path"/>
+                        
+            <to uri="direct:rest12"/>
+                    
+        </get>
+                
+        <get produces="application/json,application/xml" uri="/transactions">
+                        
+            <description>get list of transactions</description>
+                        
+            <to uri="direct:rest13"/>
+                    
+        </get>
+                
+        <post consumes="application/json" produces="application/json" uri="/transactions">
+                        
+            <description>creates a transaction</description>
+                        
+            <param name="body" required="true" type="body"/>
+                        
+            <to uri="direct:rest14"/>
+                    
+        </post>
+                
+        <get produces="application/json" uri="/transactions/{transactions_id}">
+                        
+            <description>get transaction by  transaction ID</description>
+                        
+            <param dataType="string" name="transactions_id" required="true" type="path"/>
+                        
+            <to uri="direct:rest15"/>
+                    
+        </get>
+            
+    </rest>
+    
+</rests>

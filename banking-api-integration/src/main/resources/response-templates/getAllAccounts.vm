@@ -1,0 +1,9 @@
+[
+#foreach($acc in $body)
+    {
+        "accountID": $acc,
+        "accountType": $accountType,
+        "accountNumber": ${account.accountNumber}
+    {
+#end
+]
